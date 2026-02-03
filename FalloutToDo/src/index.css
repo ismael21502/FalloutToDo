@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+* {
+    /* font-family: 'Monofonto', monospace; */
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 600;
+}
+
+/* body {
+    height: 100dvh;
+    background-color: var(--primary);
+} */
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary);
+}
+
+.glow {
+    box-shadow: 0 0 5px var(--primary);
+}
+
+.filter{
+    background-image: linear-gradient(0deg, #e5e5f700 50%, rgba(26,255,26,0.015) 50%);
+    background-size: 5px 8px;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 1000;
+    animation: scrollFilter 100s linear infinite ;
+}
+
+.selectable{
+    background-color: "tansparent";
+}
+
+.selectable:hover {
+    cursor: pointer;
+    background-color: color-mix(in srgb, var(--primary) 30%, black); 
+}
+
+.button{
+    background-color: transparent;
+}
+
+.button:hover{
+    background-color: var(--primary);
+    color: var(--bg);
+    cursor: pointer;
+}
+
+.input {
+    border-color: color-mix(in srgb, var(--primary) 50%, black);
+}
+
+.input:focus-within {
+    border-color: var(--primary);
+}
+
+.textGlow{
+    text-shadow: 0 0 10px var(--primary);
+}
+
+@keyframes scrollFilter {
+    from {
+        background-position-y: 0;
+    } to{
+        background-position-y: 100%;
+    }
+}
