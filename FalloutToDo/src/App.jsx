@@ -5,65 +5,90 @@ import TaskContainer from './components/TaskContainer'
 import { useTasks } from './context/TasksContext'
 import { useTheme } from './context/ThemeContext'
 import AddTaskModal from './components/AddTaskModal'
+import Footer from './components/Footer'
+import PopUp from './components/PopUp'
+
 function App() {
-  const { tasks, loadTasks } = useTasks()
+  const { tasks, createTask, updateTask } = useTasks()
   const { colors } = useTheme()
 
-  const [taskStatusLabel, setTaskStatusLabel] = useState("")
-  const [modalVisible, setModalVisible] = useState(false)
+  const [modal, setModal] = useState({
+    modalTitle: "",
+    modalVisible: false,
+    task: {},
+    onConfirm: null,
+  })
 
   const [taskStatus, setTaskStatus] = useState("")
-  const openModal = (label, status) => {
-    // fetch
 
-    setTaskStatusLabel(label)
-    setModalVisible(true)
-    setTaskStatus(status)
+  // const openModal = (label, status) => {
+  //   setModal(prev => ({ ...prev, modalTitle: `NEW TASK (${label})`, modalVisible: true }))
+  //   setTaskStatus(status)
+  // }
+
+
+  const openCreateTask = (label, status) => {
+    // setTaskStatus(label)
+    setModal(prev=>({...prev,
+      modalTitle: `NEW TASK (${label})`, 
+      modalVisible: true,
+      task: {},
+      onConfirm:  (title, description) => {
+        createTask(title, description, status)
+        hideModal()
+      }
+    }))
   }
 
-  const onSendTask = (title, description) => {
-    fetch("http://localhost:8000/api/tasks/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: title,
-        description: description,
-        status: taskStatus
-      })
-    })
-      .then(res => {
-        if (!res.ok) {
-          throw new Error("Error creating task")
-        }
-        loadTasks()
-        return res.json()
-      })
-      .then(data => {
-        console.log("Task creada:", data)
-      })
-      .catch(err => {
-        console.error(err)
-      })
+  const openUpdateTask = (task) => {
+    setModal(prev=>({...prev,
+      modalTitle: `Modify: ${task.title}`,
+      modalVisible: true,
+      task: task,
+      onConfirm: (title, description) => {
+        updateTask(task.id, {
+          title: title,
+          description: description,
+        })
+        hideModal()
+      }
+    }))
   }
 
+  const hideModal = () => {
+    setModal(prev => ({ ...prev, modalVisible: false }))
+  }
   return (
     <div className='flex flex-col h-[100dvh] p-[2%]'>
-      <div className="flex flex-col h-full w-full border-25 rounded-[50px]"
-        style={{ borderColor: "#23251f", backgroundColor: colors.background }}>
-        <Header />
-        <div className="flex flex-9 flex-row overflow-y-hidden ">
-          <TaskContainer title={"01. TO DO"} tasks={tasks?.filter(task => task.status === "TODO")} onAddTask={() => openModal("TODO", "TODO")} />
-          <span className="border-l" style={{ borderColor: colors.primary }}></span>
-          <TaskContainer title={"02. IN PROGRESS"} tasks={tasks?.filter(task => task.status === "IN_PROGRESS")} onAddTask={() => openModal("IN PROGRESS", "IN_PROGRESS")} />
-          <span className="border-l" style={{ borderColor: colors.primary }}></span>
-          <TaskContainer title={"03. DONE"} tasks={tasks?.filter(task => task.status === "DONE")} onAddTask={() => openModal("DONE", "DONE")} />
+      <div className="h-full w-full border-[max(2vw,3vh)] rounded-[50px]"
+        style={{ borderColor: "#23251f" }}>
+        <div className="flex flex-col w-full h-full rounded-[50px]"
+          style={{ backgroundColor: colors.background }}>
+          <Header />
+          <div className="flex flex-9 flex-row overflow-y-hidden ">
+            <TaskContainer
+              title={"01. TO DO"}
+              tasks={tasks?.filter(task => task.status === "TODO")}
+              onAddTask={() => openCreateTask("TO DO", "TODO")} 
+              onUpdateTask={openUpdateTask}/>
+            <span className="border-l" style={{ borderColor: colors.primary }}></span>
+            <TaskContainer
+              title={"02. IN PROGRESS"}
+              tasks={tasks?.filter(task => task.status === "IN_PROGRESS")}
+              onAddTask={() => openCreateTask("IN PROGRESS", "IN_PROGRESS")} 
+              onUpdateTask={openUpdateTask}/>
+            <span className="border-l" style={{ borderColor: colors.primary }}></span>
+            <TaskContainer
+              title={"03. DONE"}
+              tasks={tasks?.filter(task => task.status === "DONE")}
+              onAddTask={() => openCreateTask("DONE", "DONE")} 
+              onUpdateTask={openUpdateTask}/>
+          </div>
+          <Footer />
+          <div className="filter blink" />
         </div>
-        <div className="filter" />
       </div>
-
-      {modalVisible && <AddTaskModal status={taskStatusLabel} onClose={() => setModalVisible(false)} onConfirm={onSendTask} />}
+      {modal.modalVisible && <AddTaskModal status={taskStatus} modalTitle={modal.modalTitle} task={modal.task} onClose={hideModal} onConfirm={modal.onConfirm} />}
     </div>
 
   )

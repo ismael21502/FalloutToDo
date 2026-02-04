@@ -13,6 +13,7 @@
 
 ::-webkit-scrollbar {
     width: 4px;
+    height: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -30,6 +31,10 @@
 
 .glow {
     box-shadow: 0 0 5px var(--primary);
+}
+
+.blink {
+    animation: blink 5s ease-out infinite;
 }
 
 .filter{
@@ -81,5 +86,15 @@
         background-position-y: 0;
     } to{
         background-position-y: 100%;
+    }
+}
+
+@keyframes blink {
+    from {
+        opacity: 70%;
+    } 50%{
+        opacity: 100%;
+    } 100%{
+        opacity: 70%;
     }
 }

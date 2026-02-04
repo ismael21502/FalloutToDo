@@ -1,15 +1,6 @@
-import { useState, useEffect } from 'react'
 import { useTheme } from '../context/ThemeContext'
 function Header() {
-    const [date, setDate] = useState(new Date())
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setDate(new Date())   
-        }, 1000)
-        return () => clearInterval(interval)
-    }, [])
-
-    const {colors} = useTheme()
+    const { colors } = useTheme()
     return (
         <div className='flex flex-row w-full justify-between p-6 text-2xl items-start border-b'
             style={{ color: colors.primary, borderColor: colors.primary }}>
@@ -17,7 +8,9 @@ function Header() {
                 <h1 className='textGlow'>PIP-BOY 3000 MARK IV</h1>
                 <h2 className='textGlow text-lg opacity-60'>{`> `}VAULT-OS [V.1.0]</h2>
             </div>
-            <h2 className='text-xl'>{date.toLocaleTimeString()}</h2>
+            {/* <div className="selectable p-1 row gap-4 text-lg">
+                <h3>[LOGIN]</h3>
+            </div> */}
         </div>
     )
 }
