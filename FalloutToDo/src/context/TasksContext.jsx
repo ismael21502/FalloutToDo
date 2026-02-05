@@ -3,7 +3,6 @@ import { createContext, useContext, useEffect, useState } from 'react'
 const TasksContext = createContext()
 export const TasksProvider = ({ children }) => {
     const [tasks, setTasks] = useState([])
-    const [loading, setLoading] = useState(false)
     // const backendUrl = 'http://localhost:8000'
     // const BACKEND_URL = 'https://fallouttodo-production.up.railway.app'
     const API_URL = import.meta.env.VITE_API_URL
