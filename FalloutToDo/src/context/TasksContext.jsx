@@ -4,6 +4,9 @@ const TasksContext = createContext()
 export const TasksProvider = ({ children }) => {
     const [tasks, setTasks] = useState([])
     const [loading, setLoading] = useState(false)
+    // const backendUrl = 'http://localhost:8000/api/tasks/'
+    // const BACKEND_URL = 'https://fallouttodo-production.up.railway.app/api/tasks'
+    const API_URL = import.meta.env.VITE_API_URL
     const TASK_FLOW = {
         TODO: {
             right: "IN_PROGRESS",
@@ -22,14 +25,14 @@ export const TasksProvider = ({ children }) => {
     }, [])
 
     const loadTasks = () => {
-        fetch('http://localhost:8000/api/tasks/')
+        fetch(`${API_URL}/`)
             .then(res => res.json())
             .then(data => setTasks(data))
     }
 
     const deleteTask = (taskId) => {
         if (!taskId) return
-        fetch(`http://localhost:8000/api/tasks/${taskId}/`, {
+        fetch(`${API_URL}/${taskId}/`, {
             method: 'DELETE',
         })
             .then(res => {
@@ -38,7 +41,6 @@ export const TasksProvider = ({ children }) => {
                 }
             })
             .then(() => {
-                // console.log("Task eliminada")
                 setTasks(tasks.filter(task => task.id !== taskId))
             })
             .catch(err => console.error(err))
@@ -47,7 +49,7 @@ export const TasksProvider = ({ children }) => {
 
     const updateTask = (taskId, newObj) => {
         if (!taskId) return
-        fetch(`http://localhost:8000/api/tasks/${taskId}/`, {
+        fetch(`${API_URL}/${taskId}/`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
@@ -61,7 +63,6 @@ export const TasksProvider = ({ children }) => {
                 return res.json()
             })
             .then(updatedTask => {
-                // console.log(updatedTask)
                 setTasks(tasks.map(task =>
                     task.id === updatedTask.id ? updatedTask : task
                 ))
@@ -71,7 +72,7 @@ export const TasksProvider = ({ children }) => {
 
     const updateTaskByKey = (taskId, key, newVal) => {
         if (!newVal || !key) return
-        fetch(`http://localhost:8000/api/tasks/${taskId}/`, {
+        fetch(`${API_URL}/${taskId}/`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
@@ -87,7 +88,6 @@ export const TasksProvider = ({ children }) => {
                 return res.json()
             })
             .then(updatedTask => {
-                // console.log(updatedTask)
                 setTasks(tasks.map(task =>
                     task.id === updatedTask.id ? updatedTask : task
                 ))
@@ -97,7 +97,7 @@ export const TasksProvider = ({ children }) => {
     }
 
     const createTask = (title, description, status) => {
-        fetch("http://localhost:8000/api/tasks/", {
+        fetch(`${API_URL}/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -115,7 +115,6 @@ export const TasksProvider = ({ children }) => {
                 return res.json()
             })
             .then(data => {
-                console.log("Task creada:", data)
                 setTasks(prev => [...prev, data])
             })
             .catch(err => {
