@@ -138,9 +138,8 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # CORS_ALLOW_ALL_ORIGINS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://fallouttodo-production.up.railway.app",
+    'https://fallout-to-do.vercel.app',
 ]
-
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',

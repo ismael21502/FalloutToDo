@@ -25,7 +25,7 @@ export const TasksProvider = ({ children }) => {
     }, [])
 
     const loadTasks = () => {
-        fetch(`${API_URL}/api/tasks`)
+        fetch(`${API_URL}/api/tasks/`)
             .then(res => res.json())
             .then(data => setTasks(data))
     }
