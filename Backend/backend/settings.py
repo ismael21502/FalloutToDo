@@ -37,7 +37,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "https://fallouttodo-production.up.railway.app",
+    "fallouttodo-production.up.railway.app",
 ]
 
 # Application definition
