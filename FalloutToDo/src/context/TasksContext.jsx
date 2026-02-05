@@ -4,8 +4,8 @@ const TasksContext = createContext()
 export const TasksProvider = ({ children }) => {
     const [tasks, setTasks] = useState([])
     const [loading, setLoading] = useState(false)
-    // const backendUrl = 'http://localhost:8000/api/tasks/'
-    // const BACKEND_URL = 'https://fallouttodo-production.up.railway.app/api/tasks'
+    // const backendUrl = 'http://localhost:8000'
+    // const BACKEND_URL = 'https://fallouttodo-production.up.railway.app'
     const API_URL = import.meta.env.VITE_API_URL
     const TASK_FLOW = {
         TODO: {
@@ -25,14 +25,14 @@ export const TasksProvider = ({ children }) => {
     }, [])
 
     const loadTasks = () => {
-        fetch(`${API_URL}/`)
+        fetch(`${API_URL}/api/tasks`)
             .then(res => res.json())
             .then(data => setTasks(data))
     }
 
     const deleteTask = (taskId) => {
         if (!taskId) return
-        fetch(`${API_URL}/${taskId}/`, {
+        fetch(`${API_URL}/api/tasks/${taskId}/`, {
             method: 'DELETE',
         })
             .then(res => {
@@ -49,7 +49,7 @@ export const TasksProvider = ({ children }) => {
 
     const updateTask = (taskId, newObj) => {
         if (!taskId) return
-        fetch(`${API_URL}/${taskId}/`, {
+        fetch(`${API_URL}/api/tasks/${taskId}/`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
@@ -72,7 +72,7 @@ export const TasksProvider = ({ children }) => {
 
     const updateTaskByKey = (taskId, key, newVal) => {
         if (!newVal || !key) return
-        fetch(`${API_URL}/${taskId}/`, {
+        fetch(`${API_URL}/api/tasks/${taskId}/`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
@@ -97,7 +97,7 @@ export const TasksProvider = ({ children }) => {
     }
 
     const createTask = (title, description, status) => {
-        fetch(`${API_URL}/`, {
+        fetch(`${API_URL}/api/tasks/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
