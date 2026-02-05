@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 const TasksContext = createContext()
 export const TasksProvider = ({ children }) => {
     const [tasks, setTasks] = useState([])
+    const [loading, setLoading] = useState()
     // const backendUrl = 'http://localhost:8000'
     // const BACKEND_URL = 'https://fallouttodo-production.up.railway.app'
     const API_URL = import.meta.env.VITE_API_URL
@@ -24,9 +25,13 @@ export const TasksProvider = ({ children }) => {
     }, [])
 
     const loadTasks = () => {
+        setLoading(true)
         fetch(`${API_URL}/api/tasks/`)
             .then(res => res.json())
-            .then(data => setTasks(data))
+            .then(data => {
+                setTasks(data)
+                setLoading(false)
+            })
     }
 
     const deleteTask = (taskId) => {
@@ -47,7 +52,7 @@ export const TasksProvider = ({ children }) => {
     }
 
     const updateTask = (taskId, newObj) => {
-        if (!taskId) return
+        if (!taskId || !newObj) return
         fetch(`${API_URL}/api/tasks/${taskId}/`, {
             method: 'PATCH',
             headers: {
@@ -70,7 +75,7 @@ export const TasksProvider = ({ children }) => {
     }
 
     const updateTaskByKey = (taskId, key, newVal) => {
-        if (!newVal || !key) return
+        if (!newVal || !key || !taskId) return
         fetch(`${API_URL}/api/tasks/${taskId}/`, {
             method: 'PATCH',
             headers: {
@@ -121,7 +126,11 @@ export const TasksProvider = ({ children }) => {
             })
     }
 
-    return <TasksContext.Provider value={{ tasks, loadTasks, TASK_FLOW, deleteTask, updateTask, updateTaskByKey, createTask }}>
+    return <TasksContext.Provider value={{ 
+        tasks, 
+        TASK_FLOW, 
+        loadTasks, deleteTask, updateTask, updateTaskByKey, createTask, 
+        loading }}>
         {children}
     </TasksContext.Provider>
 }

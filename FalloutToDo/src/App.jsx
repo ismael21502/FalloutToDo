@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react'
-import './App.css'
+import { useState } from 'react'
 import Header from './components/Header'
 import TaskContainer from './components/TaskContainer'
 import { useTasks } from './context/TasksContext'
 import { useTheme } from './context/ThemeContext'
 import AddTaskModal from './components/AddTaskModal'
 import Footer from './components/Footer'
-import PopUp from './components/PopUp'
 
 function App() {
   const { tasks, createTask, updateTask } = useTasks()
@@ -20,7 +18,6 @@ function App() {
   })
 
   const openCreateTask = (label, status) => {
-    // setTaskStatus(label)
     setModal(prev=>({...prev,
       modalTitle: `NEW TASK (${label})`, 
       modalVisible: true,
@@ -53,9 +50,9 @@ function App() {
   
   return (
     <div className='flex flex-col h-[100dvh] p-[2%]'>
-      <div className="h-full w-full border-[max(2vw,3vh)] rounded-[50px]"
+      <div className="relative h-full w-full border-[max(2vw,3vh)] rounded-[50px] overflow-hidden"
         style={{ borderColor: "#23251f" }}>
-        <div className="flex flex-col w-full h-full rounded-[50px]"
+        <div className="flex flex-col w-full h-full blink"
           style={{ backgroundColor: colors.background }}>
           <Header />
           <div className="flex flex-9 flex-row overflow-y-hidden ">
@@ -78,8 +75,9 @@ function App() {
               onUpdateTask={openUpdateTask}/>
           </div>
           <Footer />
-          <div className="filter blink" />
+          {/* <div className="filter blink" /> */}
         </div>
+        <div className="absolute inset-0 filter blink"></div>
       </div>
       {modal.modalVisible && <AddTaskModal modalTitle={modal.modalTitle} task={modal.task} onClose={hideModal} onConfirm={modal.onConfirm} />}
     </div>
