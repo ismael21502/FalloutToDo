@@ -8,8 +8,9 @@ function Header() {
                 <h1 className='textGlow'>PIP-BOY 3000 MARK IV</h1>
                 <h2 className='textGlow text-lg opacity-60'>{`> `}VAULT-OS [V.1.0]</h2>
             </div>
-            {/* <div className="selectable p-1 row gap-4 text-lg">
+            {/* <div className="selectable p-1 flex-row gap-4 text-lg">
                 <h3>[LOGIN]</h3>
+                <h3>[REGISTER]</h3>
             </div> */}
         </div>
     )

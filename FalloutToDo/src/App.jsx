@@ -19,14 +19,6 @@ function App() {
     onConfirm: null,
   })
 
-  const [taskStatus, setTaskStatus] = useState("")
-
-  // const openModal = (label, status) => {
-  //   setModal(prev => ({ ...prev, modalTitle: `NEW TASK (${label})`, modalVisible: true }))
-  //   setTaskStatus(status)
-  // }
-
-
   const openCreateTask = (label, status) => {
     // setTaskStatus(label)
     setModal(prev=>({...prev,
@@ -58,6 +50,7 @@ function App() {
   const hideModal = () => {
     setModal(prev => ({ ...prev, modalVisible: false }))
   }
+  
   return (
     <div className='flex flex-col h-[100dvh] p-[2%]'>
       <div className="h-full w-full border-[max(2vw,3vh)] rounded-[50px]"
@@ -88,7 +81,7 @@ function App() {
           <div className="filter blink" />
         </div>
       </div>
-      {modal.modalVisible && <AddTaskModal status={taskStatus} modalTitle={modal.modalTitle} task={modal.task} onClose={hideModal} onConfirm={modal.onConfirm} />}
+      {modal.modalVisible && <AddTaskModal modalTitle={modal.modalTitle} task={modal.task} onClose={hideModal} onConfirm={modal.onConfirm} />}
     </div>
 
   )
